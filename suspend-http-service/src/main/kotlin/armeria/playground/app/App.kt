@@ -115,7 +115,7 @@ class SampleDefaultDispatcherService : HttpService {
         val result =
             CoroutineScope(ctx.asCoroutineContext()).async {
                 logger.info(
-                    "Inside unmanaged service, processing a request: {}",
+                    "Inside default dispatcher service, processing a request: {}",
                     coroutineContext[CoroutineDispatcher.Key],
                 )
                 suspendServe()
@@ -144,7 +144,7 @@ class SampleIODispatcherService : HttpService {
         val result =
             CoroutineScope(ctx.asCoroutineContext() + Dispatchers.IO).async {
                 logger.info(
-                    "Inside unmanaged service, processing a request: {}",
+                    "Inside io dispatcher service, processing a request: {}",
                     coroutineContext[CoroutineDispatcher.Key],
                 )
                 suspendServe()
