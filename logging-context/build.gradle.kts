@@ -10,7 +10,9 @@ dependencies {
     implementation(armeriaDeps.armeria.kotlin)
 
     // Logging
+    implementation(libs.kotlin.logging)
     runtimeOnly(armeriaDeps.logback14)
+    implementation(armeriaDeps.armeria.logback14)
 }
 
 application {

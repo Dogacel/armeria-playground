@@ -19,7 +19,9 @@ dependencyResolutionManagement {
 }
 
 include(
-    "suspend-http-service",
+    "authentication",
+    "logging-context",
     "service-request-context",
+    "suspend-http-service",
     "utilities",
 )

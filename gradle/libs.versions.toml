@@ -20,6 +20,8 @@ protoc-gen-grpc-kotlin = { module = "io.grpc:protoc-gen-grpc-kotlin", version.re
 grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc-java" }
 grpc-kotlin-stub = { module = "io.grpc:grpc-kotlin-stub", version.ref = "grpc-kotlin" }
 
+kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version = "6.0.3" }
+
 [bundles]
 grpc-kotlin = ["protobuf-kotlin", "protobuf-java-util", "grpc-stub", "grpc-kotlin-stub"]
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} %X{remote.ip} %X{tls.cipher} %X{req.headers.user-agent}
+        %X{attrs} -
+        %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="RCEA" class="com.linecorp.armeria.common.logback.RequestContextExportingAppender">
+    <appender-ref ref="CONSOLE" />
+    <export>remote.ip</export>
+    <export>tls.cipher</export>
+    <export>req.headers.user-agent</export>
+    <export>attrs:armeria.playground.app.AttrKeys#FOO_KEY</export>
+  </appender>
+
+  <logger name="armeria.playground" additivity="false">
+    <appender-ref ref="RCEA" />
+  </logger>
+
+  <root level="debug">
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>
