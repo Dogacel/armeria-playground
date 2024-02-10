@@ -1,14 +1,9 @@
 package armeria.playground.app
 
-import armeria.playground.app.TokenVerifier.verifyBasic
-import armeria.playground.app.TokenVerifier.verifyBearer
 import com.linecorp.armeria.common.HttpHeaderNames
 import com.linecorp.armeria.common.HttpRequest
 import com.linecorp.armeria.common.HttpResponse
-import com.linecorp.armeria.common.HttpStatus
-import com.linecorp.armeria.server.DecoratingHttpServiceFunction
 import com.linecorp.armeria.server.HttpService
-import com.linecorp.armeria.server.Route
 import com.linecorp.armeria.server.Server
 import com.linecorp.armeria.server.ServiceRequestContext
 import com.linecorp.armeria.server.SimpleDecoratingHttpService
@@ -20,7 +15,6 @@ import com.linecorp.armeria.server.auth.AuthService
 import com.linecorp.armeria.server.auth.Authorizer
 import com.linecorp.armeria.server.docs.DocService
 import com.linecorp.armeria.server.logging.LoggingService
-import io.netty.util.AttributeKey
 import org.slf4j.LoggerFactory
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionStage
@@ -37,17 +31,16 @@ fun main() {
             // Need auth by default
             .annotatedService()
             .pathPrefix("/needsAuth")
-            .decorator(::NeedsAuthService)
+            .decorator(NeedsAuthDecoratorFactory.newDecorator())
             .build(FooService())
             // Doc service
             .serviceUnder("/docs", DocService())
             .decorator(LoggingService.newDecorator())
-            .decorator(NeedsAuthDecoratorFactory.newDecorator())
             .build()
 
     server.start().join()
 
-//    server.stop()
+    server.stop()
 }
 
 @NeedsAuth
@@ -166,46 +159,5 @@ class DummyAuthorizer : Authorizer<HttpRequest> {
         logger.info("Authorization header: $authHeader")
 
         return CompletableFuture.completedFuture(authHeader?.startsWith("Bearer") ?: false)
-    }
-}
-
-object TokenVerifier {
-    fun verifyBearer(token: String): Boolean = true
-
-    fun verifyBasic(token: String): Boolean = true
-}
-
-val AUTH_BEARER_TOKEN_ATTR_KEY: AttributeKey<String> = AttributeKey.valueOf("authBearerToken")
-val AUTH_BASIC_TOKEN_ATTR_KEY: AttributeKey<String> = AttributeKey.valueOf("authBasicToken")
-
-class AuthDecorator(private val publicEndpoints: Set<Route>) : DecoratingHttpServiceFunction {
-    override fun serve(
-        delegate: HttpService,
-        ctx: ServiceRequestContext,
-        req: HttpRequest,
-    ): HttpResponse {
-        val authToken: String = req.headers().get(HttpHeaderNames.AUTHORIZATION) ?: ""
-
-        when {
-            authToken.startsWith("Bearer ") && verifyBearer(authToken) ->
-                ctx.setAttr(
-                    AUTH_BEARER_TOKEN_ATTR_KEY,
-                    authToken.removePrefix("Bearer "),
-                )
-
-            authToken.startsWith("Basic ") && verifyBasic(authToken) ->
-                ctx.setAttr(
-                    AUTH_BASIC_TOKEN_ATTR_KEY,
-                    authToken.removePrefix("Basic "),
-                )
-
-            publicEndpoints.any { it.apply(ctx.routingContext(), true).isPresent } -> Unit
-
-            else -> {
-                return HttpResponse.of(HttpStatus.UNAUTHORIZED)
-            }
-        }
-
-        return delegate.serve(ctx, req)
     }
 }
