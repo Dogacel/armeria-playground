@@ -27,3 +27,4 @@ grpc-kotlin = ["protobuf-kotlin", "protobuf-java-util", "grpc-stub", "grpc-kotli
 
 [plugins]
 protobuf = { id = "com.google.protobuf", version = "0.9.4" }
+ktlint = { id = "org.jilleitschuh.gradle.ktlint", version = "12.1.0" }

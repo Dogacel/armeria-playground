@@ -19,7 +19,9 @@ dependencyResolutionManagement {
 }
 
 include(
-    "authentication",
+    "authentication:proxy-auth",
+    "authentication:decorator-auth",
+    "decorating-grpc",
     "logging-context",
     "service-request-context",
     "suspend-http-service",

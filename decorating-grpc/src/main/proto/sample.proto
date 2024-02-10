@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package com.example;
+
+option java_multiple_files = true;
+
+message Msg {
+  string foo = 1;
+  int32 bar = 2;
+}
+
+service SampleService {
+  rpc EchoMsg(Msg) returns (Msg);
+
+  rpc ThrowStatus(Msg) returns (Msg);
+}
