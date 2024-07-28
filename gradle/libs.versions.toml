@@ -1,6 +1,6 @@
 [versions]
-kotlin-gradle-plugin = "1.9.20"
-kotlinx-coroutines = "1.7.3"
+kotlin-gradle-plugin = "2.0.0"
+kotlinx-coroutines = "1.8.1"
 protobuf = "3.25.2"
 grpc-java = "1.61.1"
 grpc-kotlin = "1.4.1"
