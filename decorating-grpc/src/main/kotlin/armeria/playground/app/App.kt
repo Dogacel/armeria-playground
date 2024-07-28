@@ -16,7 +16,11 @@ import com.linecorp.armeria.server.annotation.Decorator
 import com.linecorp.armeria.server.docs.DocService
 import com.linecorp.armeria.server.grpc.GrpcService
 import io.grpc.Status
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import org.slf4j.LoggerFactory
+import kotlin.system.measureTimeMillis
 
 suspend fun main() {
     val grpcService =
@@ -46,6 +50,16 @@ suspend fun main() {
     runCatching { stub.throwStatus(msg { }) }.onFailure {
         println("Got: $it")
     }
+
+    println("Starting load test")
+
+    val mySeparateDispatcher =
+
+        coroutineScope {
+            (1..1024).map {
+                async { stub.echoMsg(msg { foo = it.toString() }) }
+            }.awaitAll()
+        }
 
     server.stop()
 }
@@ -96,7 +110,18 @@ class Decorator1 : DecoratingHttpServiceFunction {
 class SampleServiceImpl : SampleServiceCoroutineImplBase() {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    fun cpuInstensiveTask(tag: String) {
+        val timeSpent =
+            measureTimeMillis {
+                val n = 500_000_000
+                val a = (1..n).reduce { acc, i -> acc * i }
+                val b = (1..n).reduce { acc, i -> acc / i }
+            }
+        println("$tag time spent: $timeSpent ms.")
+    }
+
     override suspend fun echoMsg(request: Msg): Msg {
+        cpuInstensiveTask(request.foo)
         return request
     }
 

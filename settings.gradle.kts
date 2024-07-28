@@ -4,7 +4,7 @@ plugins {
 }
 
 rootProject.name = "armeria-playground"
-val armeriaVersion = "1.27.0"
+val armeriaVersion = "1.29.3"
 
 dependencyResolutionManagement {
     repositories {
@@ -21,7 +21,9 @@ dependencyResolutionManagement {
 include(
     "authentication:proxy-auth",
     "authentication:decorator-auth",
+    "concensus-protocol",
     "decorating-grpc",
+    "graphql-sample",
     "logging-context",
     "service-request-context",
     "suspend-http-service",

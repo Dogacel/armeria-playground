@@ -4,6 +4,7 @@ kotlinx-coroutines = "1.7.3"
 protobuf = "3.25.2"
 grpc-java = "1.61.1"
 grpc-kotlin = "1.4.1"
+apollo = "3.8.5"
 
 [libraries]
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-gradle-plugin" }
@@ -22,9 +23,12 @@ grpc-kotlin-stub = { module = "io.grpc:grpc-kotlin-stub", version.ref = "grpc-ko
 
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version = "6.0.3" }
 
+apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
+
 [bundles]
 grpc-kotlin = ["protobuf-kotlin", "protobuf-java-util", "grpc-stub", "grpc-kotlin-stub"]
 
 [plugins]
 protobuf = { id = "com.google.protobuf", version = "0.9.4" }
 ktlint = { id = "org.jilleitschuh.gradle.ktlint", version = "12.1.0" }
+apollo3 = { id = "com.apollographql.apollo3", version.ref = "apollo" }

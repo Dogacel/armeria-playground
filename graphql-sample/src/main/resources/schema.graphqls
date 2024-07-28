@@ -1,0 +1,15 @@
+type Query {
+    user(id: ID!): User!
+    group(id: ID!): Group!
+}
+
+type User {
+    id: ID!
+    name: String
+}
+
+type Group {
+    id: ID!
+    name: String
+    users: [User!]!
+}
