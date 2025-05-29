@@ -1,0 +1,14 @@
+module ApplicationConfig
+
+mode: "dev" | "prod"
+
+class Server {
+  port: Int32(this > 0 && this <= 65535)
+  host: String
+
+  enableGraphQL: Boolean
+  enableRest: Boolean
+  enableDocService: Boolean
+}
+
+server: Server

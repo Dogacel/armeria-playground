@@ -5,6 +5,9 @@ protobuf = "3.25.2"
 grpc-java = "1.61.1"
 grpc-kotlin = "1.4.1"
 apollo = "3.8.5"
+exposed = "0.61.0"
+postgresql = "42.7.5"
+hikari = "6.3.0"
 
 [libraries]
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-gradle-plugin" }
@@ -25,8 +28,16 @@ kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version = "6.0
 
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
 
+exposed = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+exposed-kotlin-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed" }
+
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+
 [bundles]
 grpc-kotlin = ["protobuf-kotlin", "protobuf-java-util", "grpc-stub", "grpc-kotlin-stub"]
+exposed = ["exposed", "exposed-jdbc", "exposed-kotlin-datetime", "postgresql"]
 
 [plugins]
 protobuf = { id = "com.google.protobuf", version = "0.9.4" }

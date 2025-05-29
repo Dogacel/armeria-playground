@@ -1,10 +1,11 @@
 plugins {
     // Apply the foojay-resolver plugin to allow automatic download of JDKs
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
+    id("org.graalvm.buildtools.native") version "0.10.3" apply false
 }
 
 rootProject.name = "armeria-playground"
-val armeriaVersion = "1.29.3"
+val armeriaVersion = "1.32.5"
 
 dependencyResolutionManagement {
     repositories {
@@ -28,4 +29,6 @@ include(
     "service-request-context",
     "suspend-http-service",
     "utilities",
+    "graal-sample",
+    "exposed-sample",
 )

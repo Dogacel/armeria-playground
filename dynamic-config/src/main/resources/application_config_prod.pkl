@@ -1,0 +1,12 @@
+amends "application_config.pkl"
+
+mode = "prod"
+
+server {
+  port = 8080
+  host = "*"
+
+  enableGraphQL = true
+  enableRest = true
+  enableDocService = false
+}
